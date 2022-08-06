@@ -1,0 +1,10 @@
+{% load static %}
+
+<div class="card m-3" style="width: 18rem;">
+    <img src="{% static "blog/images/hero-image.jpg" %}" class="card-img-top" alt="BLOG_IMAGE">
+    <div class="card-body">
+      <h5 class="card-title">{{blog.title}}</h5>
+      <p class="card-text">{{blog.content}}</p>
+      <p class="card-text"><b>Published: </b><span class="text-muted">{{blog.publishDate}}</span></p>
+    </div>
+  </div>

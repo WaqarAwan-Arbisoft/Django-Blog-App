@@ -1,0 +1,57 @@
+{% load static %}
+
+<nav class="navbar py-4 navbar-expand-lg {% if page == 'index' %} bg-transparent {% else %} bg-light {% endif %} navbar-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bolder" href="/">
+        <img src="{% static "blog/images/logo.png" %}" alt="LOGO" width="60">
+      </a>
+      <button class="navbar-toggler text-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon text-white"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 fs-4 mb-lg-0">
+          <li class="nav-item mx-4">
+            <a class="nav-link pb-1 {% if page == 'index' %}text-light navlink-active{% else %}text-dark{% endif %}" href="/">Home</a>
+          </li>
+          {% if isLoggedIn %}
+            <li class="nav-item mx-4">
+              <a class="nav-link pb-1 {% if page == 'index' %}text-light{% else %}text-dark{% endif %} {% if page == 'add-blog' %}navlink-active{% endif %}" href="{% url "add-blog" %}">Add Blog</a>
+            </li>
+          {% endif %}
+          <li class="nav-item mx-4">
+            <a class="nav-link pb-1 {% if page == 'index' %}text-light{% else %}text-dark{% endif %} {% if page == 'all-blogs' %}navlink-active{% endif %}" href="{% url "all-blogs" %}">All Blogs</a>
+          </li>
+          <li class="nav-item mx-4">
+            <a class="nav-link pb-1 {% if page == 'index' %}text-light{% else %}text-dark{% endif %} {% if page == 'authors' %}navlink-active{% endif %}" href="{% url "authors" %}">Authors</a>
+          </li>
+        </ul>
+        <div class="d-flex">
+          {% if isLoggedIn %}
+            <div class="d-flex justify-content-between align-items-center border border-success {% if page == 'index' %}text-light{% else %}text-dark{% endif %} rounded-3 p-1">
+                <div class="m-1">
+                  <img class="rounded-pill" src="{% static "blog/images/default_profile_image.png"  %}" alt="IMAGE" width="40" >
+                </div>
+                <div class="d-flex align-items-center m-1">
+                  {{username}}
+                </div>
+            </div>
+            <div class="d-flex align-items-center">
+              <form action="/logout" method="GET">
+                {% csrf_token %}
+                <button class="btn btn-danger mx-2" type="submit">
+                  Logout
+                </button>
+              </form>
+            </div>
+          {% else  %}
+            <button class="btn btn-success mx-2" type="submit">
+              <a class="text-decoration-none text-white" href="{% url "login_page" %}">Login</a>
+            </button>
+            <button class="btn btn-dark mx-2" type="submit">
+              <a class="text-decoration-none text-white" href="{% url "register_page" %}">Register</a>
+            </button>
+          {% endif %}
+        </form>
+      </div>
+    </div>
+  </nav>

@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block title %}All Blogs{% endblock title %}
+{% block css_files %}
+<link rel="stylesheet" href="{% static "blog/css/style.css" %}">
+{% endblock css_files %}
+
+{% block content %}
+{% include "blog/includes/navbar.html"%}
+
+
+{% if not isLoggedIn %}
+    <h5 class="text-center mt-4">
+        Want to give your review on this blog? <a href="{% url "login_page" %}" class="color-p-1 text-decoration-none">Login</a> now!
+    </h5>
+{% endif %}
+
+
+{% if not liked and isLoggedIn %}
+    <div class="mt-4">
+        <h5 class="text-center">
+            Please drop a review about this blog. Icon will disappear once you give it a like.
+        </h5>
+        <form class="d-flex justify-content-center" method="POST" action="/like-blog/{{blog.id}}">
+            {% csrf_token %}
+            <button type="submit" class="d-flex justify-content-center cursor-pointer bg-white p-2 rounded-3">
+                <img src="{% static "blog/images/like.png" %}" alt="" width="60">
+            </div>
+        </div>
+    </div>
+{% endif %}
+
+
+<h1 class="text-center mt-5 color-p-1">{{blog.title|title}}</h1>
+<div class="text-center"><b>Published: </b> <span>{{blog.publishDate}}</span></div>
+<div class="text-center mb-5"><b>by: </b> <span>{{blog.author.username}}</span></div>
+
+<div class="container d-flex flex-wrap">
+    <img src="{% static "blog/images/hero-image.jpg" %}" class="card-img-top single-blog-img" alt="BLOG_IMAGE">
+    <p class="my-4">
+        {{blog.content}}
+    </p>
+</div>
+
+
+
+
+{% endblock content %}

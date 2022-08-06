@@ -1,0 +1,14 @@
+{% load static %}
+
+<div class="card p-2 m-3" style="width: 18rem;">
+    <div class="text-center p-3">
+        <img src="{% static "blog/images/profile_image_2.png" %}" alt="PROFILE_IMAGE" width="120">
+    </div>
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item"><b>Username: </b>{{author.username|title}}</li>
+        <li class="list-group-item"><b>Name: </b>{{author.fullName|title}}</li>
+       {% if username == author.username %}
+        <li class="list-group-item text-center"><span class="badge bg-secondary">You</span></li>
+       {% endif %}
+    </ul>
+    </div>

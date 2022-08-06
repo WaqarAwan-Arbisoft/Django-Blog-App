@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block title %}Add Blog{% endblock title %}
+{% block css_files %}
+<link rel="stylesheet" href="{% static "blog/css/style.css" %}">
+{% endblock css_files %}
+
+{% block content %}
+{% include "blog/includes/navbar.html"%}
+<h1 class="text-center my-5 color-p-1">Add New Blog</h1>
+
+<div class="container mx-auto">
+    <form method="POST" action="/add-blog">
+        {% if error %}
+            <div class="alert alert-danger" role="alert">
+            {{message}}
+          </div>
+        {% endif %}
+        {% csrf_token %}
+        <div class="mb-3">
+            <div class="mb-3">
+                <label for="disabledTextInput" class="form-label">Blog Author</label>
+                <input type="text" id="disabledTextInput" disabled="true" class="form-control" value="{{username}}">
+            </div>
+        </div>
+        <div class="mb-3">
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="floatingInput-title" name="title" placeholder="Blog Title">
+                <label for="floatingInput-title">Blog Title</label>
+            </div>
+        </div>
+        <div class="mb-3">
+            <div class="form-floating mb-3">
+                <textarea class="form-control" placeholder="Blog Content" name="content" id="floatingTextarea" row="40"></textarea>
+                <label for="floatingTextarea">Blog Content</label>
+              </div>
+        </div>
+        <input type="hidden" name="authorId" value={{authorId}}>
+        <div class="text-center mt-5">
+            <button type="submit" class="btn primary-btn">Add Blog</button>
+        </div>
+    </form>
+</div>
+
+{% endblock content %}

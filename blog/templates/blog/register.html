@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block title %}Register{% endblock title %}
+{% block css_files %}
+<link rel="stylesheet" href="{% static "blog/css/style.css" %}">
+{% endblock css_files %}
+
+{% block content %}
+{% include "blog/includes/navbar.html"%}
+<h1 class="text-center my-5 color-p-1">Register</h1>
+
+<div class="container mx-auto">
+    <form method="POST" action="/register">
+        {% if error %}
+            <div class="alert alert-danger" role="alert">
+            {{message}}
+          </div>
+        {% endif %}
+        {% csrf_token %}
+        <div class="mb-3">
+          <label for="username" class="form-label">Username</label>
+          <input type="text" class="form-control" id="username" name="username">
+        </div>
+        <div class="mb-3">
+          <label for="fullName" class="form-label">Full Name</label>
+          <input type="text" class="form-control" id="fullName" name="fullName">
+        </div>
+        <div class="mb-3">
+          <label for="password" class="form-label">Password</label>
+          <input type="password" class="form-control" id="password" name="password">
+        </div>
+        <div class="mb-3">
+            <label for="c-password" class="form-label">Confirm Password</label>
+            <input type="password" class="form-control" id="c-password" name="confirmPassword">
+          </div>
+        <div class="text-center mt-5">
+            <button type="submit" class="btn primary-btn">Register</button>
+        </div>
+      </form>
+</div>
+
+{% endblock content %}

@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block title %}Login{% endblock title %}
+{% block css_files %}
+<link rel="stylesheet" href="{% static "blog/css/style.css" %}">
+{% endblock css_files %}
+
+{% block content %}
+{% include "blog/includes/navbar.html"%}
+<h1 class="text-center my-5 color-p-1">Authors Registered</h1>
+
+<div class="container d-flex flex-wrap">
+    {% for author in authors %}
+        {% include "blog/includes/authorProfileCard.html"%}
+    {% endfor %}
+</div>
+
+{% endblock content %}

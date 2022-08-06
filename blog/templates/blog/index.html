@@ -1,0 +1,36 @@
+
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block title %}Home{% endblock title %}
+{% block css_files %}
+<link rel="stylesheet" href="{% static "blog/css/style.css" %}">
+{% endblock css_files %}
+
+{% block content %}
+<div class="min-height-70vh hero-image">
+    <div class="container">
+        {% include "blog/includes/navbar.html"%}
+
+        <div class="row mt-5 pt-5 align-items-center">
+            <div class="col-md-6 text-white">
+                <h1 class="fst-italic fw-bolder my-5">Remember that happiness is a way of travel, not a destination.</h1>
+                <button class="btn primary-btn"><a class="text-decoration-none text-white" href="{% url "all-blogs" %}">View All Blogs</a></button>
+            </div>
+            <div class="col-md-6">
+            </div>
+        </div>
+    </div>
+</div>
+
+<h1 class="color-p-1 my-4 text-center">Our Top Blog</h1>
+<div class="d-flex flex-wrap justify-content-center container my-5">
+    {% for blog in topBlogs %}
+    <a href="{% url "single-blog" blog.id %}" class="text-dark text-decoration-none">
+        {% include "blog/includes/blogCard.html" %}
+    </a>
+    {% endfor %}
+</div>
+
+{% endblock content %}

@@ -1,0 +1,64 @@
+:root
+{
+    --primary-color:rgb(2, 154, 2);
+    --primary-color-hover:rgb(31, 169, 31);
+}
+
+.min-height-70vh
+{
+    min-height: 70vh;
+}
+
+.h-inherit
+{
+    height: inherit;
+}
+.hero-image
+{
+    background-image: url(../images/hero-image-1.jpg);
+    background-position: center;
+    background-size: cover;
+}
+
+.navlink-active
+{
+    border-bottom: 5px solid var(--primary-color);
+}
+
+.primary-btn{
+    width: 250px;
+    text-decoration: none;
+    color: white;
+    background-color: var(--primary-color);
+    border-radius: 15px;
+}
+
+.primary-btn:hover
+{
+    background-color: var(--primary-color-hover);
+}
+
+.color-p-1
+{
+    color: var(--primary-color);
+}
+
+.navbar-profile-card
+{
+    border-radius: 20px;
+    color: white;
+    background-color: var(--primary-color) !important;
+    border: 1px solid white !important;
+}
+
+.single-blog-img
+{
+    height: 40vh !important;
+    object-fit: cover !important;
+    object-position: top !important;
+}
+
+.cursor-pointer
+{
+    cursor: pointer;
+}

@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block title %}All Blogs{% endblock title %}
+{% block css_files %}
+<link rel="stylesheet" href="{% static "blog/css/style.css" %}">
+{% endblock css_files %}
+
+{% block content %}
+{% include "blog/includes/navbar.html"%}
+<h1 class="text-center my-5 color-p-1">All Blogs</h1>
+
+{% if blogs|length > 0 %}
+    <div class="container d-flex flex-wrap">
+        {% for blog in blogs %}
+            <a href="{% url "single-blog" blog.id %}" class="text-dark text-decoration-none">
+                {% include "blog/includes/blogCard.html"%}
+            </a>
+        {% endfor %} 
+    </div>
+{% else %}
+<h3 class="text-center">No Blogs added yet</h3>
+{% endif %}
+
+
+{% endblock content %}
