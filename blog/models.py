@@ -10,6 +10,7 @@ class User(models.Model):
     fullName=models.CharField(max_length=50)
     password=models.CharField(max_length=25)
     confirmPassword=models.CharField(max_length=25)
+    image=models.FileField(upload_to="images")
 
     def __str__(self):
         return f"Name: {self.username}, Username: {self.fullName}"
@@ -22,6 +23,7 @@ class Blog(models.Model):
     content=models.TextField()
     publishDate=models.DateField(default=date.today())
     author=models.ForeignKey(User, on_delete=models.CASCADE)
+    image=models.FileField(upload_to="images")
 
     def __str__(self):
         return f"'{self.title}' was published by {self.author.username}"

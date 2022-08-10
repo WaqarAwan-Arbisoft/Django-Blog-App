@@ -1,7 +1,8 @@
+from datetime import datetime
 from importlib.resources import path
 from django.shortcuts import render
 from django.urls import path
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect,Http404
 from django.db.models import F
 from django.db.models import Count
 
@@ -54,6 +55,8 @@ def index(request):
 
 
 def login(request):
+    if request.session.get("username"):
+        return HttpResponseRedirect("/")
     if(request.method=="POST"):
         user=None
         try:
@@ -74,6 +77,8 @@ def login(request):
 
 
 def register(request):
+    if request.session.get("username"):
+        return HttpResponseRedirect("/")
     if(request.method=="POST"):
         try:
             User.objects.get(username=request.POST['username'])
@@ -88,7 +93,7 @@ def register(request):
                 "error": True,
                 "message": "Password does not match with confirm password field."
             })
-            newUser=User(username=request.POST['username'],fullName=request.POST['fullName'],password=request.POST['password'],confirmPassword=request.POST['confirmPassword'])
+            newUser=User(username=request.POST['username'],fullName=request.POST['fullName'],password=request.POST['password'],confirmPassword=request.POST['confirmPassword'],image=request.FILES["userImage"])
             newUser.save()
             return render(request,"blog/login.html")
         else:
@@ -116,7 +121,13 @@ def authors(request):
             "authors":User.objects.all(),
         })
 
+def extractFile(file):
+    with open(f"uploads/{datetime.now()}_image.jpg","wb+") as dest:
+        for chunk in file.chunks():
+            dest.write(chunk)
 def addBlog(request):
+    if not request.session.get("username"):
+        return HttpResponseRedirect("/")
     if(request.method=="POST"):
         if(request.POST["title"].strip()=='' or request.POST["content"].strip()==''):
             return render(request,"blog/add-blog.html",{
@@ -129,10 +140,11 @@ def addBlog(request):
                 "authorId":request.session['userId'],
             })
         else:
-           blogAuthor= User.objects.get(id=int(request.POST["authorId"]))
-           newBlog=Blog(title=request.POST["title"],content=request.POST["content"],author=blogAuthor)
-           newBlog.save()
-           return HttpResponseRedirect(f"/all-blogs")
+            # extractFile(request.FILES["blogImage"])
+            blogAuthor= User.objects.get(id=int(request.POST["authorId"]))
+            newBlog=Blog(title=request.POST["title"],content=request.POST["content"],author=blogAuthor,image=request.FILES["blogImage"])
+            newBlog.save()
+            return HttpResponseRedirect(f"/all-blogs")
 
 
     if("username" in request.session):
@@ -183,53 +195,30 @@ def blog(request,blogId):
     except:
         return HttpResponseRedirect("/all-blogs")
     if "username" in request.session:
-        # if "likedBlogs" in request.session:
-        #     likedIds=request.session["likedBlogs"].split(',')
-        #     try:
-        #         findIndex=likedIds.index(f"{blogId}")
-        #     except:
-        #         return render(request,"blog/blog.html",{
-        #             "page":"all-blogs",
-        #             "blog":blog,
-        #             "liked":False,
-        #             "isLoggedIn":True,
-        #             "username":request.session['username'],
-        #             "fullname":request.session['fullName'],
-        #             "authorId":request.session['userId'],
-        #         })
-        #     else:
-        #         return render(request,"blog/blog.html",{
-        #             "page":"all-blogs",
-        #             "blog":blog,
-        #             "liked":True,
-        #             "isLoggedIn":True,
-        #             "username":request.session['username'],
-        #             "fullname":request.session['fullName'],
-        #             "authorId":request.session['userId'],
-        #         })
-        # else:
-        #     return render(request,"blog/blog.html",{
-        #             "page":"all-blogs",
-        #             "blog":blog,
-        #             "liked":False,
-        #             "isLoggedIn":True,
-        #             "username":request.session['username'],
-        #             "fullname":request.session['fullName'],
-        #             "authorId":request.session['userId'],
-        #         }) 
         foundUser=User.objects.get(id=int(request.session["userId"]))
         try:
             Likes.objects.get(blog=foundBlog,user=foundUser)
         except:
-            return render(request,"blog/blog.html",{
-                    "page":"all-blogs",
-                    "blog":foundBlog,
-                    "liked":False,
-                    "isLoggedIn":True,
-                    "username":request.session['username'],
-                    "fullname":request.session['fullName'],
-                    "authorId":request.session['userId'],
-                })
+            if(foundBlog.author.username==request.session["username"]):
+                return render(request,"blog/blog.html",{
+                        "page":"all-blogs",
+                        "blog":foundBlog,
+                        "liked":True,
+                        "isLoggedIn":True,
+                        "username":request.session['username'],
+                        "fullname":request.session['fullName'],
+                        "authorId":request.session['userId'],
+                    })
+            else:
+                return render(request,"blog/blog.html",{
+                        "page":"all-blogs",
+                        "blog":foundBlog,
+                        "liked":False,
+                        "isLoggedIn":True,
+                        "username":request.session['username'],
+                        "fullname":request.session['fullName'],
+                        "authorId":request.session['userId'],
+                    })
         else:
            return render(request,"blog/blog.html",{
                     "page":"all-blogs",
@@ -249,6 +238,8 @@ def blog(request,blogId):
 
 
 def logout(request):
+    if not request.session.get("username"):
+        return HttpResponseRedirect("/")
     del request.session['username']
     del request.session['fullName']
     del request.session['isLoggedIn']
@@ -266,3 +257,7 @@ def likeBlog(request,blogId):
 
     return HttpResponseRedirect(f"/all-blogs/{blogId}")
     
+
+
+def render404(request):
+    raise Http404()

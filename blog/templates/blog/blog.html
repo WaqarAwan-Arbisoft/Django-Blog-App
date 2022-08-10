@@ -13,7 +13,7 @@
 
 {% if not isLoggedIn %}
     <h5 class="text-center mt-4">
-        Want to give your review on this blog? <a href="{% url "login_page" %}" class="color-p-1 text-decoration-none">Login</a> now!
+        Want to give your review on this blog or write your own one? <a href="{% url "login_page" %}" class="color-p-1 text-decoration-none">Login</a> now!
     </h5>
 {% endif %}
 
@@ -38,7 +38,7 @@
 <div class="text-center mb-5"><b>by: </b> <span>{{blog.author.username}}</span></div>
 
 <div class="container d-flex flex-wrap">
-    <img src="{% static "blog/images/hero-image.jpg" %}" class="card-img-top single-blog-img" alt="BLOG_IMAGE">
+    <img src="{{ blog.image.url }}" class="card-img-top single-blog-img" alt="BLOG_IMAGE">
     <p class="my-4">
         {{blog.content}}
     </p>

@@ -26,6 +26,9 @@
 
 <h1 class="color-p-1 my-4 text-center">Our Top Blog</h1>
 <div class="d-flex flex-wrap justify-content-center container my-5">
+    {% if topBlogs|length == 0 %}
+    <h3 class="text-center my-3">No blogs added yet or not enough information.</h3>
+    {% endif %}
     {% for blog in topBlogs %}
     <a href="{% url "single-blog" blog.id %}" class="text-dark text-decoration-none">
         {% include "blog/includes/blogCard.html" %}

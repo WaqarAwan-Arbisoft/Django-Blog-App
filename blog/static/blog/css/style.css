@@ -62,3 +62,8 @@
 {
     cursor: pointer;
 }
+
+.card-img-top
+{
+    height: 280px !important;
+}

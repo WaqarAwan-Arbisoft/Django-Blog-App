@@ -11,5 +11,6 @@ urlpatterns=[
     path("all-blogs",views.allBlogs,name="all-blogs"),
     path("logout",views.logout,name="logout"),
     path("all-blogs/<int:blogId>",views.blog,name="single-blog"),
-    path("like-blog/<int:blogId>",views.likeBlog,name="like-blog")
+    path("like-blog/<int:blogId>",views.likeBlog,name="like-blog"),
+    path("**",views.render404)
 ]

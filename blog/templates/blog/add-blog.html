@@ -12,7 +12,7 @@
 <h1 class="text-center my-5 color-p-1">Add New Blog</h1>
 
 <div class="container mx-auto">
-    <form method="POST" action="/add-blog">
+    <form method="POST" action="/add-blog" enctype="multipart/form-data">
         {% if error %}
             <div class="alert alert-danger" role="alert">
             {{message}}
@@ -32,11 +32,16 @@
             </div>
         </div>
         <div class="mb-3">
+            <label for="blogImage" class="form-label">Blog Image</label>
+            <input class="form-control" type="file" id="blogImage" name="blogImage" accept="image/*">
+          </div>
+        <div class="mb-3">
             <div class="form-floating mb-3">
                 <textarea class="form-control" placeholder="Blog Content" name="content" id="floatingTextarea" row="40"></textarea>
                 <label for="floatingTextarea">Blog Content</label>
               </div>
         </div>
+       
         <input type="hidden" name="authorId" value={{authorId}}>
         <div class="text-center mt-5">
             <button type="submit" class="btn primary-btn">Add Blog</button>
